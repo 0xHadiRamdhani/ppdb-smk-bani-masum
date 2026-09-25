@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #0a0a0a;
-  --paper: #ffffff;
-  --paper-soft: #f3f2ee;
+  --ink: #0f172a;
+  --paper: #f8fbff;
+  --paper-soft: #eaf3ff;
+  --primary: #2563eb;
+  --primary-strong: #1d4ed8;
+  --primary-soft: #dbeafe;
 }
 
 @theme inline {
   --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-paper-soft: var(--paper-soft);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
   --font-sans: var(--font-work-sans);
 }
 
@@ -19,7 +25,9 @@
 
 body {
   margin: 0;
-  background: var(--paper);
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 30%),
+    linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
   color: var(--ink);
   font-family: var(--font-work-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -49,6 +57,18 @@ a {
   background-color: var(--paper-soft);
 }
 
+.text-primary {
+  color: var(--primary);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
 .font-display {
   font-family: var(--font-bangers), cursive;
   letter-spacing: 0.025em;
@@ -74,4 +94,18 @@ a {
 .comic-button:active {
   transform: translate(6px, 6px);
   box-shadow: 0 0 0 var(--ink);
+}
+
+@media (max-width: 639px) {
+  .comic-shadow {
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .comic-shadow-lg {
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .comic-button:active {
+    transform: translate(3px, 3px);
+  }
 }
