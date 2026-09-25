@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { Panel, SubpageShell } from "@/app/components/subpage-shell";
+
+export default function AnnouncementPage() { return <SubpageShell eyebrow="Pengumuman Kelulusan" title="Hasil PPDB 2026/2027" intro="Masukkan nomor pendaftaran untuk melihat hasil seleksi resmi."><section className="mx-auto max-w-xl px-5 py-14 sm:px-8"><Panel><form action="/ppdb/ranking" className="space-y-5"><label className="block text-sm font-bold">Nomor pendaftaran<input required name="number" placeholder="BM26-123456" className="mt-2 block w-full border-[3px] border-ink bg-paper px-4 py-3 uppercase" /></label><button className="w-full border-[3px] border-primary bg-primary px-5 py-3 font-bold text-paper comic-shadow">Lihat Hasil</button></form><p className="mt-6 text-center text-sm"><Link href="/ppdb/ranking" className="font-bold text-primary underline underline-offset-4">Lihat daftar ranking</Link></p></Panel></section></SubpageShell>; }

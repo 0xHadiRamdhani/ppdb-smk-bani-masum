@@ -1,15 +1,112 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Panel, SubpageShell } from "@/app/components/subpage-shell";
+import { StepIndicator, TextField, UploadField } from "./form-fields";
 
 const steps = ["Data Diri", "Orang Tua", "Jurusan", "Dokumen"];
-const fields = [["name", "Nama lengkap", "text"], ["nisn", "NISN", "text"], ["birth", "Tanggal lahir", "date"], ["phone", "No. HP calon siswa", "tel"]];
+const personalFields = [
+    ["name", "Nama lengkap", "text"],
+    ["nisn", "NISN", "text"],
+    ["birth", "Tanggal lahir", "date"],
+    ["phone", "No. HP calon siswa", "tel"],
+] as const;
+const documentFields = [
+    ["kk", "Kartu Keluarga"],
+    ["ijazah", "Ijazah / SKL"],
+    ["photo", "Pas foto"],
+] as const;
+
+type Draft = Record<string, string>;
+
+function RegistrationSuccess({ number }: { number: string }) {
+    return <SubpageShell eyebrow="Pendaftaran Berhasil" title="Simpan Nomor Pendaftaranmu">
+        <section className="mx-auto max-w-2xl px-5 py-14 sm:px-8">
+            <Panel>
+                <p className="text-neutral-700">Nomor pendaftaran kamu:</p>
+                <div className="my-5 border-[3px] border-primary bg-paper-soft p-5 text-center font-display text-4xl">{number}</div>
+                <p className="leading-7">Gunakan nomor ini untuk cek status berkas atau membuka kartu pendaftaran.</p>
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                    <Link href={`/ppdb/kartu?number=${number}`} className="inline-flex border-[3px] border-primary bg-primary px-5 py-3 font-bold text-paper comic-shadow">Cetak Kartu Pendaftaran</Link>
+                    <Link href="/ppdb/cek-status" className="inline-flex border-[3px] border-primary px-5 py-3 font-bold text-primary">Cek Status</Link>
+                </div>
+            </Panel>
+        </section>
+    </SubpageShell>;
+}
+
 export default function RegisterPage() {
-    const [step, setStep] = useState(0); const [submitted, setSubmitted] = useState(""); const [files, setFiles] = useState<Record<string, string>>({});
-    const next = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); if (step < 3) setStep(step + 1); else { const number = `BM26-${Math.floor(100000 + Math.random() * 900000)}`; localStorage.setItem(`ppdb:${number}`, JSON.stringify({ number, name: "Pendaftar Baru", status: "Menunggu verifikasi" })); setSubmitted(number); } };
-    const upload = (event: ChangeEvent<HTMLInputElement>) => { const file = event.target.files?.[0]; if (!file) return; if (file.size > 2 * 1024 * 1024) { alert("Ukuran file maksimal 2 MB."); return; } if (!file.type.includes("pdf") && !file.type.includes("image")) { alert("File harus berupa PDF atau gambar."); return; } setFiles({ ...files, [event.target.name]: file.name }); };
-    if (submitted) return <SubpageShell eyebrow="Pendaftaran Berhasil" title="Simpan Nomor Pendaftaranmu"><section className="mx-auto max-w-2xl px-5 py-14 sm:px-8"><Panel><p className="text-neutral-700">Nomor pendaftaran kamu:</p><div className="my-5 border-[3px] border-ink bg-paper-soft p-5 text-center font-display text-4xl">{submitted}</div><p className="leading-7">Konfirmasi email akan dikirim setelah layanan email sekolah terhubung. Untuk sekarang, gunakan nomor ini untuk cek status.</p><Link href="/ppdb/cek-status" className="mt-7 inline-flex border-[3px] border-ink bg-ink px-5 py-3 font-bold text-paper comic-shadow">Cek Status</Link></Panel></section></SubpageShell>;
-    return <SubpageShell eyebrow="Formulir Online" title="Daftar sebagai Siswa Baru" intro="Isi data dengan benar. Kamu bisa berpindah langkah menggunakan tombol di bawah."><section className="mx-auto max-w-3xl px-5 py-14 sm:px-8"><div className="mb-8 grid grid-cols-4 gap-2">{steps.map((label, index) => <div key={label} className={`border-b-[3px] pb-2 text-center text-xs font-bold ${index <= step ? "border-ink" : "border-neutral-300 text-neutral-400"}`}><span className="font-display text-xl">0{index + 1}</span><br />{label}</div>)}</div><Panel><form onSubmit={next} className="space-y-5">{step === 0 && fields.map(([name, label, type]) => <label key={name} className="block text-sm font-bold">{label}<input required name={name} type={type} className="mt-2 block w-full border-[3px] border-ink bg-paper px-4 py-3 font-normal outline-none focus:bg-paper-soft" /></label>)}{step === 1 && <><label className="block text-sm font-bold">Nama orang tua / wali<input required className="mt-2 block w-full border-[3px] border-ink px-4 py-3 font-normal" /></label><label className="block text-sm font-bold">No. HP orang tua<input required type="tel" className="mt-2 block w-full border-[3px] border-ink px-4 py-3 font-normal" /></label></>}{step === 2 && <label className="block text-sm font-bold">Pilihan jurusan<select required className="mt-2 block w-full border-[3px] border-ink bg-paper px-4 py-3 font-normal"><option value="">Pilih jurusan</option><option>RPL - Teknik Komputer</option><option>TBSM - Teknik Otomotif</option></select></label>}{step === 3 && <div className="space-y-4">{[["kk", "Kartu Keluarga"], ["ijazah", "Ijazah / SKL"], ["photo", "Pas foto"]].map(([name, label]) => <label key={name} className="block text-sm font-bold">{label}<input required name={name} type="file" accept=".pdf,image/*" onChange={upload} className="mt-2 block w-full border-[3px] border-ink p-3 font-normal" />{files[name] && <span className="mt-1 block text-xs font-normal">{files[name]}</span>}</label>)}<p className="text-xs text-neutral-600">Format PDF/JPG/PNG, ukuran maksimal 2 MB per file.</p></div>}<div className="flex justify-between gap-4 pt-4">{step > 0 && <button type="button" onClick={() => setStep(step - 1)} className="border-[3px] border-ink bg-paper px-5 py-3 font-bold comic-shadow">Kembali</button>}<button type="submit" className="ml-auto border-[3px] border-ink bg-ink px-5 py-3 font-bold text-paper comic-shadow">{step === 3 ? "Kirim Pendaftaran" : "Lanjut"}</button></div></form></Panel></section></SubpageShell>;
+    const [step, setStep] = useState(0);
+    const [draft, setDraft] = useState<Draft>({});
+    const [files, setFiles] = useState<Draft>({});
+    const [submittedNumber, setSubmittedNumber] = useState("");
+
+    const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) {
+            window.alert("Ukuran file maksimal 2 MB.");
+            return;
+        }
+        if (!file.type.includes("pdf") && !file.type.includes("image")) {
+            window.alert("File harus berupa PDF atau gambar.");
+            return;
+        }
+        setFiles((current) => ({ ...current, [event.target.name]: file.name }));
+    };
+
+    const handleNext = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formValues = Object.fromEntries(
+            Array.from(new FormData(event.currentTarget).entries()).map(([key, value]) => [key, String(value)]),
+        );
+        const nextDraft = { ...draft, ...formValues, ...files };
+        setDraft(nextDraft);
+        if (step < steps.length - 1) {
+            setStep((current) => current + 1);
+            return;
+        }
+        const number = `BM26-${Math.floor(100000 + Math.random() * 900000)}`;
+        localStorage.setItem(`ppdb:${number}`, JSON.stringify({
+            number,
+            ...nextDraft,
+            name: nextDraft.name || "Pendaftar Baru",
+            status: "Menunggu verifikasi",
+        }));
+        setSubmittedNumber(number);
+    };
+
+    if (submittedNumber) return <RegistrationSuccess number={submittedNumber} />;
+
+    return <SubpageShell eyebrow="Formulir Online" title="Daftar sebagai Siswa Baru" intro="Isi data dengan benar. Kamu bisa berpindah langkah menggunakan tombol di bawah.">
+        <section className="mx-auto max-w-3xl px-5 py-14 sm:px-8">
+            <StepIndicator steps={steps} currentStep={step} />
+            <Panel>
+                <form onSubmit={handleNext} className="space-y-5">
+                    {step === 0 && personalFields.map(([name, label, type]) => <TextField key={name} name={name} label={label} type={type} />)}
+                    {step === 1 && <>
+                        <TextField name="parentName" label="Nama orang tua / wali" />
+                        <TextField name="parentPhone" label="No. HP orang tua" type="tel" />
+                    </>}
+                    {step === 2 && <label className="block text-sm font-bold">Pilihan jurusan
+                        <select required name="major" className="mt-2 block w-full border-[3px] border-ink bg-paper px-4 py-3 font-normal">
+                            <option value="">Pilih jurusan</option>
+                            <option>RPL - Teknik Komputer</option>
+                            <option>TBSM - Teknik Otomotif</option>
+                        </select>
+                    </label>}
+                    {step === 3 && <div className="space-y-4">
+                        {documentFields.map(([name, label]) => <UploadField key={name} name={name} label={label} filename={files[name]} onChange={handleUpload} />)}
+                        <p className="text-xs text-neutral-600">Format PDF/JPG/PNG, ukuran maksimal 2 MB per file.</p>
+                    </div>}
+                    <div className="flex justify-between gap-4 pt-4">
+                        {step > 0 && <button type="button" onClick={() => setStep((current) => current - 1)} className="border-[3px] border-ink bg-paper px-5 py-3 font-bold comic-shadow">Kembali</button>}
+                        <button type="submit" className="ml-auto border-[3px] border-primary bg-primary px-5 py-3 font-bold text-paper comic-shadow">{step === steps.length - 1 ? "Kirim Pendaftaran" : "Lanjut"}</button>
+                    </div>
+                </form>
+            </Panel>
+        </section>
+    </SubpageShell>;
 }

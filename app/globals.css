@@ -23,14 +23,58 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea,
+button {
+  border-radius: 0;
+}
+
+img,
+svg,
+video,
+iframe {
+  max-width: 100%;
+}
+
 body {
   margin: 0;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 30%),
     linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
   color: var(--ink);
   font-family: var(--font-work-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .backdrop-blur {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
 }
 
 a {
