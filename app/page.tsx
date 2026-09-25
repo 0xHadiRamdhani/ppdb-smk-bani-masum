@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Float, Reveal, StaggerGroup, StaggerItem } from "@/app/components/motion";
+import TechBackground from "@/app/components/tech-background";
 
 const advantages = [
     ["01", "Guru Berpengalaman", "Diajar tenaga pendidik yang paham kebutuhan industri, bukan cuma teori di buku."],
@@ -38,7 +39,7 @@ export default function Home() {
             </div>
         </header>
 
-        <section className="border-b-[3px] border-primary/70 py-10 sm:py-16 lg:py-20"><div className="mx-auto grid max-w-7xl items-center gap-8 px-4 sm:gap-10 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
+        <section className="relative overflow-hidden border-b-[3px] border-primary/70 py-10 sm:py-16 lg:py-20"><TechBackground /><div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 sm:gap-10 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
             <Reveal><div className="lg:max-w-2xl"><h1 className="font-display text-4xl leading-[.98] sm:text-7xl">Wujudkan Masa Depanmu Mulai dari SMK Bani Masum!</h1><p className="mt-5 max-w-xl text-base leading-7 text-ink/80 sm:text-lg sm:leading-8">Belajar keahlian yang benar-benar dipakai di dunia kerja, dari praktik nyata sampai bimbingan guru yang siap mendampingi kamu sampai lulus.</p><div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-4"><Link href="/ppdb/daftar" className="comic-button border-[3px] border-primary bg-primary px-6 py-3 text-center font-bold text-paper comic-shadow shadow-[5px_5px_0_#1D4ED8]">Daftar Sekarang</Link><a href="#jurusan" className="comic-button border-[3px] border-primary bg-paper px-6 py-3 text-center font-bold text-primary comic-shadow">Lihat Jurusan</a></div></div></Reveal>
             <Float className="w-full lg:max-w-[500px] lg:justify-self-end"><StudentArt /></Float>
         </div></section>
