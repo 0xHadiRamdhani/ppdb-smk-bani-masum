@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { Panel, SubpageShell } from "@/app/components/subpage-shell";
+
+const stats = [["128", "Total pendaftar"], ["42", "Menunggu verifikasi"], ["76", "Sudah diverifikasi"]];
+export default function DashboardPage() { return <SubpageShell eyebrow="Dashboard Admin" title="Ringkasan PPDB" intro="Pantau progres penerimaan siswa baru tahun ajaran 2026/2027."><section className="mx-auto max-w-5xl px-5 py-14 sm:px-8"><div className="grid gap-5 sm:grid-cols-3">{stats.map(([number, label]) => <Panel key={label}><span className="font-display text-5xl">{number}</span><p className="mt-2 text-sm font-bold">{label}</p></Panel>)}</div><Panel><div className="flex flex-wrap items-center justify-between gap-4"><div><h2 className="font-display text-3xl">Kelola Pendaftar</h2><p className="mt-1 text-sm text-neutral-700">Filter, periksa dokumen, dan perbarui status.</p></div><Link href="/admin/pendaftar" className="border-[3px] border-ink bg-ink px-5 py-3 font-bold text-paper comic-shadow">Buka Tabel</Link></div></Panel></section></SubpageShell>; }

@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { Panel, SubpageShell } from "@/app/components/subpage-shell";
+
+export default function AdminLoginPage() { return <SubpageShell eyebrow="Area Panitia" title="Login Admin" intro="Kelola verifikasi pendaftar dari satu tempat."><section className="mx-auto max-w-md px-5 py-14 sm:px-8"><Panel><form action="/admin/dashboard" className="space-y-5"><label className="block text-sm font-bold">Email<input required type="email" className="mt-2 block w-full border-[3px] border-ink px-4 py-3 font-normal" /></label><label className="block text-sm font-bold">Password<input required type="password" className="mt-2 block w-full border-[3px] border-ink px-4 py-3 font-normal" /></label><button className="w-full border-[3px] border-ink bg-ink px-5 py-3 font-bold text-paper comic-shadow">Masuk</button></form><Link href="/" className="mt-6 block text-center text-sm font-bold underline">Kembali ke beranda</Link></Panel></section></SubpageShell>; }
