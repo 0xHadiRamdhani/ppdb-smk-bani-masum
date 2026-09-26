@@ -20,6 +20,32 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Admin Pendaftar
+
+Halaman `/admin` menggunakan login username/password server-side. Jalankan `supabase/registrations.sql` di SQL Editor Supabase agar tabel `registrations` dan bucket dokumen privat tersedia. Pastikan environment berisi:
+
+```env
+ADMIN_USERNAME=smkbm
+ADMIN_PASSWORD=use-a-strong-unique-password
+ADMIN_SESSION_SECRET=generate-a-random-secret
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+SUPABASE_SECRET_KEY=your-server-only-secret-key
+```
+
+`SUPABASE_SECRET_KEY` mengakses data hanya dari server; `ADMIN_SESSION_SECRET` menandatangani sesi admin dan harus berupa secret acak yang terpisah. Jangan beri prefiks `NEXT_PUBLIC_` pada password atau secret. Ganti password contoh sebelum deployment, simpan variabel tersebut di secret manager hosting, dan restart aplikasi setelah mengubahnya.
+
+## Prisma dan Postgres
+
+`DATABASE_URL` menggunakan Supabase transaction-mode pooler (port `6543` dan `pgbouncer=true`) untuk koneksi aplikasi. `DIRECT_URL` menggunakan session-mode pooler (port `5432`) untuk perintah migrasi Prisma. Prisma CLI membaca keduanya dari `.env.local`; pada URL lokal, ganti `[YOUR-PASSWORD]` dengan password database dan URL-encode karakter khusus.
+
+```sh
+npm run db:generate
+npm run db:migrate
+```
+
+Untuk deployment, jalankan `npm run db:deploy` setelah migrasi dibuat dan simpan kedua URL sebagai environment server-only.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
