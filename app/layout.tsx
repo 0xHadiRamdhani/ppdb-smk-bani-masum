@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bangers, Work_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const workSans = Work_Sans({
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="id" className={`${workSans.variable} ${bangers.variable}`}>
+      <Script id="theme-init" strategy="beforeInteractive">{`(() => { try { const theme = localStorage.getItem("ppdb:theme"); if (theme === "dark") { document.documentElement.dataset.theme = "dark"; document.documentElement.style.colorScheme = "dark"; } } catch {} })()`}</Script>
       <body>{children}</body>
     </html>
   );

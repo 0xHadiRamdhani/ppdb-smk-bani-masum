@@ -7,6 +7,30 @@
   --primary: #2563eb;
   --primary-strong: #1d4ed8;
   --primary-soft: #dbeafe;
+  --muted: #475569;
+  --muted-soft: #64748b;
+  --control-border: #cbd5e1;
+  --error-bg: #fef2f2;
+  --error-text: #991b1b;
+  --success-bg: #f0fdf4;
+  --success-text: #166534;
+}
+
+html[data-theme="dark"] {
+  --ink: #f8fafc;
+  --paper: #0f172a;
+  --paper-soft: #172554;
+  --primary: #60a5fa;
+  --primary-strong: #3b82f6;
+  --primary-soft: #1e3a8a;
+  --muted: #cbd5e1;
+  --muted-soft: #94a3b8;
+  --control-border: #475569;
+  --error-bg: #450a0a;
+  --error-text: #fecaca;
+  --success-bg: #052e16;
+  --success-text: #bbf7d0;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -26,6 +50,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  background: var(--paper);
 }
 
 button,
@@ -60,7 +85,7 @@ body {
   overflow-x: hidden;
   background:
     radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 30%),
-    linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-soft) 100%);
   color: var(--ink);
   font-family: var(--font-work-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -101,6 +126,48 @@ a {
   background-color: var(--paper-soft);
 }
 
+.text-neutral-700,
+.text-neutral-600 {
+  color: var(--muted);
+}
+
+.text-neutral-500,
+.text-neutral-400 {
+  color: var(--muted-soft);
+}
+
+.border-neutral-300 {
+  border-color: var(--control-border);
+}
+
+.bg-red-50 {
+  background-color: var(--error-bg);
+}
+
+.text-red-800 {
+  color: var(--error-text);
+}
+
+.bg-green-50 {
+  background-color: var(--success-bg);
+}
+
+.text-green-800 {
+  color: var(--success-text);
+}
+
+input,
+select,
+textarea {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted-soft);
+}
+
 .text-primary {
   color: var(--primary);
 }
@@ -138,6 +205,14 @@ a {
 .comic-button:active {
   transform: translate(6px, 6px);
   box-shadow: 0 0 0 var(--ink);
+}
+
+dialog {
+  color: var(--ink);
+}
+
+dialog::backdrop {
+  background: color-mix(in srgb, var(--ink) 70%, transparent);
 }
 
 @media (max-width: 639px) {
