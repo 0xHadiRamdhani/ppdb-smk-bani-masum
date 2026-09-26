@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="id" className={`${workSans.variable} ${bangers.variable}`}>
+    <html lang="id" className={`${workSans.variable} ${bangers.variable}`} suppressHydrationWarning>
       <head>
         <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: `(() => { try { const theme = localStorage.getItem("ppdb:theme"); if (theme === "dark") { document.documentElement.dataset.theme = "dark"; document.documentElement.style.colorScheme = "dark"; } } catch {} })()` }} />
       </head>

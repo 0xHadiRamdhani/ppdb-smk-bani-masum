@@ -208,11 +208,14 @@ textarea::placeholder {
 }
 
 dialog {
+  background-color: var(--paper);
   color: var(--ink);
 }
 
 dialog::backdrop {
-  background: color-mix(in srgb, var(--ink) 70%, transparent);
+  background: rgba(2, 6, 23, 0.68);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 @media (max-width: 639px) {
