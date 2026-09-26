@@ -1,0 +1,32 @@
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Next.js build output
+.next
+/out
+
+# Env files (inject via docker-compose/CI)
+.env*
+
+# Dev & misc
+.git
+.gitignore
+README.md
+*.md
+*.log
+.DS_Store
+*.tsbuildinfo
+
+# IDE
+.vscode
+.idea
+.kilo
+.windsurf
+.claude
+.agents
