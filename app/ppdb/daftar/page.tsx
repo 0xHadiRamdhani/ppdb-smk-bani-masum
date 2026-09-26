@@ -40,8 +40,10 @@ function RegistrationSuccess({ number }: { number: string }) {
 export default function RegisterPage() {
     const [step, setStep] = useState(0);
     const [draft, setDraft] = useState<Draft>({});
-    const [files, setFiles] = useState<Draft>({});
+    const [files, setFiles] = useState<Record<string, File>>({});
     const [submittedNumber, setSubmittedNumber] = useState("");
+    const [submitting, setSubmitting] = useState(false);
+    const [formError, setFormError] = useState("");
 
     const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -54,28 +56,36 @@ export default function RegisterPage() {
             window.alert("File harus berupa PDF atau gambar.");
             return;
         }
-        setFiles((current) => ({ ...current, [event.target.name]: file.name }));
+        setFiles((current) => ({ ...current, [event.target.name]: file }));
     };
 
-    const handleNext = (event: FormEvent<HTMLFormElement>) => {
+    const handleNext = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formValues = Object.fromEntries(
-            Array.from(new FormData(event.currentTarget).entries()).map(([key, value]) => [key, String(value)]),
+            Array.from(new FormData(event.currentTarget).entries())
+                .filter((entry): entry is [string, string] => typeof entry[1] === "string"),
         );
-        const nextDraft = { ...draft, ...formValues, ...files };
+        const nextDraft = { ...draft, ...formValues };
         setDraft(nextDraft);
         if (step < steps.length - 1) {
             setStep((current) => current + 1);
             return;
         }
-        const number = `BM26-${Math.floor(100000 + Math.random() * 900000)}`;
-        localStorage.setItem(`ppdb:${number}`, JSON.stringify({
-            number,
-            ...nextDraft,
-            name: nextDraft.name || "Pendaftar Baru",
-            status: "Menunggu verifikasi",
-        }));
-        setSubmittedNumber(number);
+        setSubmitting(true);
+        setFormError("");
+        try {
+            const payload = new FormData();
+            Object.entries(nextDraft).forEach(([key, value]) => payload.append(key, value));
+            Object.entries(files).forEach(([key, file]) => payload.append(key, file));
+            const response = await fetch("/api/pendaftaran", { method: "POST", body: payload });
+            const result = await response.json() as { number?: string; error?: string };
+            if (!response.ok || !result.number) throw new Error(result.error || "Pendaftaran gagal dikirim.");
+            setSubmittedNumber(result.number);
+        } catch (error) {
+            setFormError(error instanceof Error ? error.message : "Pendaftaran gagal dikirim. Coba lagi.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     if (submittedNumber) return <RegistrationSuccess number={submittedNumber} />;
@@ -98,12 +108,13 @@ export default function RegisterPage() {
                         </select>
                     </label>}
                     {step === 3 && <div className="space-y-4">
-                        {documentFields.map(([name, label]) => <UploadField key={name} name={name} label={label} filename={files[name]} onChange={handleUpload} />)}
+                        {documentFields.map(([name, label]) => <UploadField key={name} name={name} label={label} filename={files[name]?.name} onChange={handleUpload} />)}
                         <p className="text-xs text-neutral-600">Format PDF/JPG/PNG, ukuran maksimal 2 MB per file.</p>
                     </div>}
+                    {formError && <p role="alert" className="border-2 border-red-700 bg-red-50 p-3 text-sm font-bold text-red-800">{formError}</p>}
                     <div className="flex justify-between gap-4 pt-4">
                         {step > 0 && <button type="button" onClick={() => setStep((current) => current - 1)} className="border-[3px] border-ink bg-paper px-5 py-3 font-bold comic-shadow">Kembali</button>}
-                        <button type="submit" className="ml-auto border-[3px] border-primary bg-primary px-5 py-3 font-bold text-paper comic-shadow">{step === steps.length - 1 ? "Kirim Pendaftaran" : "Lanjut"}</button>
+                        <button type="submit" disabled={submitting} className="ml-auto border-[3px] border-primary bg-primary px-5 py-3 font-bold text-paper comic-shadow disabled:cursor-wait disabled:opacity-60">{submitting ? "Mengirim..." : step === steps.length - 1 ? "Kirim Pendaftaran" : "Lanjut"}</button>
                     </div>
                 </form>
             </Panel>
