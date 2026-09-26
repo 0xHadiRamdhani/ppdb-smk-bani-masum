@@ -189,6 +189,11 @@ textarea::placeholder {
   box-shadow: 6px 6px 0 var(--ink);
 }
 
+.theme-toggle:hover {
+  background-color: var(--primary);
+  color: var(--paper);
+}
+
 .comic-shadow-lg {
   box-shadow: 8px 8px 0 var(--ink);
 }

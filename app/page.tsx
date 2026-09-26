@@ -22,7 +22,7 @@ const requirements = ["Fotokopi Kartu Keluarga (KK)", "Fotokopi Akta Kelahiran",
 function StudentArt() {
     return <div className="relative border-[3px] border-ink bg-paper-soft p-5 comic-shadow-lg">
         <div className="absolute right-4 top-4 h-20 w-20 rounded-full halftone opacity-40" />
-        <Image src="/coding.jpg" alt="Siswa sedang belajar coding" width={768} height={768} className="relative aspect-square w-full object-cover" priority />
+        <Image src="/siswa-berseragam.png" alt="Siswa SMK Bani Masum berseragam" width={768} height={768} className="relative aspect-square w-full object-cover" priority />
         <div className="absolute bottom-4 left-4 border-2 border-ink bg-paper px-3 py-2 text-xs font-extrabold">SIAP BERKARYA</div>
     </div>;
 }

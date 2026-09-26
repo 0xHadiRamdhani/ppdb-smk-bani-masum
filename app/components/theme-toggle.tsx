@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
 
 type Theme = "light" | "dark";
 
@@ -29,5 +30,5 @@ export function ThemeToggle() {
         applyTheme(nextTheme);
     };
 
-    return <button type="button" onClick={toggleTheme} className="border-2 border-primary px-2 py-1 text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-paper" aria-label={theme === "dark" ? "Aktifkan mode terang" : "Aktifkan mode gelap"} title={theme === "dark" ? "Mode terang" : "Mode gelap"}>{theme === "dark" ? "Terang" : "Gelap"}</button>;
+    return <button type="button" onClick={toggleTheme} className="theme-toggle flex h-9 w-9 items-center justify-center border-2 border-primary text-primary transition-colors hover:bg-primary hover:text-paper" aria-label={theme === "dark" ? "Aktifkan mode terang" : "Aktifkan mode gelap"} title={theme === "dark" ? "Mode terang" : "Mode gelap"}>{theme === "dark" ? <Sun aria-hidden="true" size={20} strokeWidth={3} /> : <Moon aria-hidden="true" size={20} strokeWidth={3} />}</button>;
 }
