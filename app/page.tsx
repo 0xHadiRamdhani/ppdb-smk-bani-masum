@@ -2,16 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Float, Reveal, StaggerGroup, StaggerItem } from "@/app/components/motion";
 import TechBackground from "@/app/components/tech-background";
+import MajorSelector from "./components/major-selector";
 
 const advantages = [
     ["01", "Guru Berpengalaman", "Diajar tenaga pendidik yang paham kebutuhan industri, bukan cuma teori di buku."],
     ["02", "Praktik Langsung", "Jam praktik lebih banyak, plus kesempatan magang di perusahaan mitra."],
     ["03", "Fasilitas Lengkap", "Lab komputer, bengkel, dan ruang praktik yang terus diperbarui."],
     ["04", "Alumni Terserap Kerja", "Jaringan alumni dan mitra industri membantu lulusan mendapat pekerjaan."],
-];
-const majors = [
-    ["RPL", "Teknik Komputer", "Belajar pemrograman, jaringan, dan perangkat lunak untuk kebutuhan industri digital."],
-    ["TBSM", "Teknik Otomotif", "Servis dan perawatan sepeda motor, dari mesin hingga sistem kelistrikan."],
 ];
 const steps = [
     ["01", "Isi Formulir", "Lengkapi data diri, data orang tua, dan pilih jurusan."],
@@ -46,7 +43,7 @@ export default function Home() {
 
         <section id="keunggulan" className="border-b-[3px] border-ink py-12 sm:py-16"><div className="mx-auto max-w-7xl px-4 sm:px-8"><Reveal><p className="mb-2 text-xs font-extrabold uppercase tracking-wide">Kenapa SMK Bani Masum</p><h2 className="font-display text-4xl sm:text-5xl">Bukan Cuma Sekolah, Tapi Bekal Kerja</h2><p className="mt-3 max-w-2xl leading-7 text-neutral-700">Empat hal yang bikin lulusan kami siap terjun ke dunia kerja maupun lanjut kuliah.</p></Reveal><StaggerGroup className="mt-8 grid gap-4 sm:mt-9 sm:grid-cols-2 sm:gap-5 lg:auto-rows-fr lg:grid-cols-4">{advantages.map(([number, title, text]) => <StaggerItem key={title} className="h-full lg:h-[230px]"><article className="flex h-full flex-col border-[3px] border-ink bg-paper p-5 comic-shadow"><span className="font-display text-4xl">{number}</span><h3 className="mt-4 text-lg font-extrabold">{title}</h3><p className="mt-2 text-sm leading-6 text-neutral-700">{text}</p></article></StaggerItem>)}</StaggerGroup></div></section>
 
-        <section id="jurusan" className="border-b-[3px] border-ink bg-paper-soft py-16"><div className="mx-auto max-w-7xl px-5 sm:px-8"><Reveal><p className="mb-2 text-xs font-extrabold uppercase tracking-wide text-primary">Kompetensi Keahlian</p><h2 className="font-display text-4xl sm:text-5xl">Pilih Jurusan Sesuai Minatmu</h2></Reveal><StaggerGroup className="mt-9 grid gap-5 md:auto-rows-fr md:grid-cols-2">{majors.map(([code, name, text]) => <StaggerItem key={code} className="h-full md:h-[300px]"><article className="flex h-full flex-col overflow-hidden border-[3px] border-primary bg-paper comic-shadow"><div className="border-b-[3px] border-primary bg-primary-soft p-6"><span className="font-display text-5xl text-primary">{code}</span></div><div className="flex flex-1 flex-col p-5"><h3 className="font-extrabold">{name}</h3><p className="mt-2 text-sm leading-6 text-neutral-700">{text}</p></div></article></StaggerItem>)}</StaggerGroup></div></section>
+        <section id="jurusan" className="border-b-[3px] border-ink bg-paper-soft py-16"><div className="mx-auto max-w-7xl px-5 sm:px-8"><Reveal><p className="mb-2 text-xs font-extrabold uppercase tracking-wide text-primary">Kompetensi Keahlian</p><h2 className="font-display text-4xl sm:text-5xl">Pilih Jurusan Sesuai Minatmu</h2></Reveal><MajorSelector /></div></section>
 
         <section id="alur" className="border-b-[3px] border-ink py-16"><div className="mx-auto max-w-7xl px-5 sm:px-8"><Reveal><p className="mb-2 text-xs font-extrabold uppercase tracking-wide">Cara Mendaftar</p><h2 className="font-display text-4xl sm:text-5xl">4 Langkah Sampai Resmi Jadi Siswa</h2></Reveal><StaggerGroup className="mt-9 grid overflow-hidden border-[3px] border-ink sm:grid-cols-2 lg:auto-rows-fr lg:grid-cols-4 comic-shadow">{steps.map(([number, title, text], index) => <StaggerItem key={number} className={`${index < 3 ? "border-b-[3px] lg:border-b-0 lg:border-r-[3px]" : ""} ${index % 2 === 0 ? "sm:border-r-[3px] lg:border-r-[3px]" : ""} lg:h-[260px]`}><article className="flex h-full flex-col bg-paper p-6"><span className="font-display text-4xl">{number}</span><h3 className="mt-4 font-extrabold">{title}</h3><p className="mt-2 text-sm leading-6 text-neutral-700">{text}</p></article></StaggerItem>)}</StaggerGroup></div></section>
 
